@@ -209,3 +209,5 @@ __marimo__/
 Test_dataset/
 
 hdrcnn-master/
+converted_exr_train/
+converted_exr_val/

@@ -10,7 +10,7 @@ import cv2
 
 class HDRDataset(Dataset):
     def __init__(self, root_dir, json_path, split="train",
-                 filter_fn=None, daytime_filter=None, transform=None):
+                 filter_fn=None, daytime_filter=None, transform=None, get_only_hdr=False):
         """
         root_dir: dataset root folder containing HDR/, PNG/, HDR_np/
         json_path: path to all_captures.json
@@ -22,6 +22,7 @@ class HDRDataset(Dataset):
         self.root_dir = root_dir
         self.transform = transform
         self.data = []
+        self.get_only_hdr = get_only_hdr
 
         with open(json_path, "r") as f:
             meta = json.load(f)
@@ -102,9 +103,15 @@ class HDRDataset(Dataset):
             ldr = torch.from_numpy(np.array(ldr)).permute(2, 0, 1).float() / 255.0
 
         # Load HDR EXR
-        hdr = cv2.imread(entry["hdr"], cv2.IMREAD_UNCHANGED)  # H x W x C, float32
-        hdr = torch.from_numpy(hdr).permute(2, 0, 1).float()  # C x H x W
-        
+        hdr = cv2.imread(
+            entry["hdr"], flags=cv2.IMREAD_ANYDEPTH + cv2.IMREAD_COLOR
+        )
+        hdr = np.array(hdr, dtype=np.float32)
+        if self.transform is not None:
+            hdr = self.transform(hdr)
+            
+        if self.get_only_hdr:
+            return hdr
         return {
             "ldr": ldr,
             "hdr": hdr,
