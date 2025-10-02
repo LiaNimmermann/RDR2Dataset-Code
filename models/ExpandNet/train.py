@@ -34,6 +34,12 @@ def parse_args():
         help='Checkpoint model every x epochs.',
     )
     parser.add_argument(
+        '--image_log_freq',
+        type=int,
+        default=1,
+        help='Log validation images every x epochs.',
+    )
+    parser.add_argument(
         '-d', '--data_root_path', default='hdr_data', help='Path to hdr data.'
     )
     parser.add_argument(
@@ -86,7 +92,7 @@ def transform(hdr):
 
 def train(opt):
     model = ExpandNet()
-    optimizer = torch.optim.Adam(model.parameters(), lr=7e-5)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
     loss_fn = ExpandNetLoss()
 
     # Datasets
