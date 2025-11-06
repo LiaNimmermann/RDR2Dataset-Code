@@ -10,6 +10,6 @@ def create_model(opt):
         from .Generation_condition import GenerationModel as M
     else:
         raise NotImplementedError('Model [{:s}] not recognized.'.format(model))
-    m = M(opt)
+    m = M(opt) # type: ignore
     logger.info('Model [{:s}] is created.'.format(m.__class__.__name__))
     return m

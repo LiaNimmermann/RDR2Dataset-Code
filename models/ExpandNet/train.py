@@ -25,7 +25,7 @@ from torch.utils.tensorboard import SummaryWriter
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--batch_size', type=int, default=12, help='Batch size.'
+        '--batch_size', type=int, default=16, help='Batch size.'
     )
     parser.add_argument(
         '--checkpoint_freq',
@@ -41,6 +41,9 @@ def parse_args():
     )
     parser.add_argument(
         '-d', '--data_root_path', default='hdr_data', help='Path to hdr data.'
+    )
+    parser.add_argument(
+        '-rn', '--run_name', default='ExpandNetRunX', help='TensorBoard run name.'
     )
     parser.add_argument(
         '-s',
@@ -81,13 +84,80 @@ class ExpandNetLoss(nn.Module):
         cosine_term = (1 - self.similarity(x, y)).mean()
         return self.l1_loss(x, y) + self.loss_lambda * cosine_term
 
+import torch
+import numpy as np
+import cv2
 
-def transform(hdr):
+def transform(hdr, verbose=False):
+    """
+    Transform HDR EXR image into LDR/HDR tensors for training.
+    Includes safeguards to prevent NaNs and extreme values.
+    """
+
+    # Ensure float32
+    hdr = hdr.astype(np.float32)
+
+    # --- 1. Crop / Gaussian slice ---
+    hdr = slice_gauss(hdr, crop_size=(384, 384), precision=(0.1, 1))
+
+    # --- 2. Resize ---
+    hdr = cv2.resize(hdr, (256, 256), interpolation=cv2.INTER_AREA)
+
+    # --- 3. Map range safely ---
+    hdr_min, hdr_max = hdr.min(), hdr.max()
+    if np.isclose(hdr_max - hdr_min, 0):
+        if verbose:
+            print("Warning: hdr_max - hdr_min is too small, skipping map_range")
+        hdr = np.zeros_like(hdr, dtype=np.float32)
+    else:
+        hdr = map_range(hdr)  # your existing map_range
+        # Replace any potential NaN/Infs
+        hdr = np.nan_to_num(hdr, nan=0.0, posinf=hdr_max, neginf=hdr_min)
+
+    # --- 4. Random tone mapping to LDR ---
+    ldr = random_tone_map(hdr)
+    ldr = np.clip(ldr, 0.0, 1.0)  # clamp to valid LDR range
+
+    # --- 5. Convert to torch tensors ---
+    ldr = cv2torch(ldr).float()
+    hdr = cv2torch(hdr).float()
+
+    # --- 6. Clamp / scale HDR to prevent huge values ---
+#    hdr = torch.clamp(hdr, 0.0, 15.0)  # optional hard clamp
+ #   hdr = hdr / 10.0  # scale based on dataset stats
+
+    # --- 7. Check for NaNs/Infs in tensors ---
+    if torch.isnan(hdr).any() or torch.isinf(hdr).any():
+        raise ValueError("HDR tensor contains NaN or Inf after transform")
+    if torch.isnan(ldr).any() or torch.isinf(ldr).any():
+        raise ValueError("LDR tensor contains NaN or Inf after transform")
+
+    if verbose:
+        print("HDR stats: min/max/mean/std", hdr.min().item(), hdr.max().item(),
+              hdr.mean().item(), hdr.std().item())
+        print("LDR stats: min/max/mean/std", ldr.min().item(), ldr.max().item(),
+              ldr.mean().item(), ldr.std().item())
+
+    return ldr, hdr
+
+
+
+def transform_old(hdr):
     hdr = slice_gauss(hdr, crop_size=(384, 384), precision=(0.1, 1))
     hdr = cv2.resize(hdr, (256, 256))
     hdr = map_range(hdr)
     ldr = random_tone_map(hdr)
-    return cv2torch(ldr).float(), cv2torch(hdr).float()
+    ldr = cv2torch(ldr).float()
+    hdr = cv2torch(hdr).float()
+
+    
+    # LDR: usually 0–1
+    ldr = torch.clamp(ldr, 0.0, 1.0)
+
+    # HDR: scale down to prevent huge values
+    hdr = hdr / 10.0  # adjust based on dataset stats
+
+    return ldr, hdr
 
 
 def train(opt):
@@ -147,7 +217,8 @@ def train(opt):
         )
 
     # TensorBoard
-    writer = SummaryWriter(log_dir=os.path.join(opt.save_path, "logs"))
+    writer = SummaryWriter(log_dir=os.path.join(opt.save_path, "logs", opt.run_name))
+
 
     avg_loss = 0
     global_step = 0
@@ -161,7 +232,10 @@ def train(opt):
                 ldr_in = ldr_in.cuda()
                 hdr_target = hdr_target.cuda()
 
+            print("LDR min/max:", ldr_in.min(), ldr_in.max())
+            print("HDR min/max:", hdr_target.min(), hdr_target.max())
             hdr_prediction = model(ldr_in)
+            print("Pred min/max:", hdr_prediction.min(), hdr_prediction.max())
             total_loss = loss_fn(hdr_prediction, hdr_target)
 
             optimizer.zero_grad()

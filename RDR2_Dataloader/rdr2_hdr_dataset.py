@@ -112,10 +112,5 @@ class HDRDataset(Dataset):
             
         if self.get_only_hdr:
             return hdr
-        return {
-            "ldr": ldr,
-            "hdr": hdr,
-            "scene_id": entry["scene_id"],
-            "daytime_idx": entry["daytime_idx"],
-            "meta": entry["meta"]
-        }
+        return ldr, hdr, entry["daytime_idx"], entry["meta"]
+        

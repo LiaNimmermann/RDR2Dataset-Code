@@ -14,7 +14,7 @@ import options.options as option
 from utils import util
 from data import create_dataloader, create_dataset
 from models import create_model
-
+from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 
 
@@ -78,12 +78,7 @@ def main():
         # tensorboard logger
         if opt['use_tb_logger'] and 'debug' not in opt['name']:
             version = float(torch.__version__[0:3])
-            if version >= 1.1:  # PyTorch 1.1
-                from torch.utils.tensorboard import SummaryWriter
-            else:
-                logger.info(
-                    'You are using PyTorch {}. Tensorboard will use [tensorboardX]'.format(version))
-                from tensorboardX import SummaryWriter
+                
             tb_logger = SummaryWriter(log_dir=os.path.join(opt['path']['root'], 'tb_logger', opt['name']))
             #tb_logger = SummaryWriter(log_dir=  + '/tb_logger/' + opt['name'])
     else:
@@ -94,7 +89,7 @@ def main():
     opt = option.dict_to_nonedict(opt)
 
     #### random seed
-    seed = opt['train']['manual_seed']
+    seed = opt['train']['manual_seed'] # type: ignore
     if seed is None:
         seed = random.randint(1, 10000)
     if rank <= 0:

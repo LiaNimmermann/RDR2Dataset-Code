@@ -1,0 +1,475 @@
+{
+    "alligator": {
+        "alligator": [
+            "alligator",
+            "alligator 2",
+            "alligator 3"
+        ]
+    },
+    "armadillo": {
+        "armadillo": [
+            "armadillo"
+        ]
+    },
+    "badger": {
+        "badger": [
+            "badger"
+        ]
+    },
+    "bat": {
+        "bat": [
+            "bat"
+        ]
+    },
+    "bear": {
+        "bear": [
+            "bear"
+        ],
+        "bearblack": [
+            "bearblack"
+        ]
+    },
+    "beaver": {
+        "beaver": [
+            "beaver"
+        ]
+    },
+    "bird": {
+        "bluejay": [
+            "bluejay"
+        ],
+        "californiacondor": [
+            "californiacondor"
+        ],
+        "cardinal": [
+            "cardinal"
+        ],
+        "carolinaparakeet": [
+            "carolinaparakeet"
+        ],
+        "cedarwaxwing": [
+            "cedarwaxwing"
+        ],
+        "chicken": [
+            "chicken"
+        ],
+        "cormorant": [
+            "cormorant"
+        ],
+        "cranewhooping": [
+            "cranewhooping"
+        ],
+        "crow": [
+            "crow"
+        ],
+        "duck": [
+            "duck"
+        ],
+        "eagle": [
+            "eagle"
+        ],
+        "egret": [
+            "egret"
+        ],
+        "goosecanada": [
+            "goosecanada"
+        ],
+        "hawk": [
+            "hawk"
+        ],
+        "heron": [
+            "heron"
+        ],
+        "loon": [
+            "loon"
+        ],
+        "oriole": [
+            "oriole"
+        ],
+        "owl": [
+            "owl"
+        ],
+        "parrot": [
+            "parrot"
+        ],
+        "pelican": [
+            "pelican"
+        ],
+        "pheasant": [
+            "pheasant"
+        ],
+        "pigeon": [
+            "pigeon"
+        ],
+        "prairiechicken": [
+            "prairiechicken"
+        ],
+        "quail": [
+            "quail"
+        ],
+        "raven": [
+            "raven"
+        ],
+        "redfootedbooby": [
+            "redfootedbooby"
+        ],
+        "robin": [
+            "robin"
+        ],
+        "rooster": [
+            "rooster"
+        ],
+        "roseatespoonbill": [
+            "roseatespoonbill"
+        ],
+        "seagull": [
+            "seagull"
+        ],
+        "songbird": [
+            "songbird"
+        ],
+        "sparrow": [
+            "sparrow"
+        ],
+        "turkey": [
+            "turkey",
+            "turkeywild"
+        ],
+        "vulture": [
+            "vulture"
+        ],
+        "woodpecker": [
+            "woodpecker",
+            "woodpecker 2"
+        ]
+    },
+    "buffalo": {
+        "buffalo": [
+            "buffalo"
+        ]
+    },
+    "cat": {
+        "cat": [
+            "cat"
+        ]
+    },
+    "chipmunk": {
+        "chipmunk": [
+            "chipmunk"
+        ]
+    },
+    "cougar": {
+        "cougar": [
+            "cougar"
+        ]
+    },
+    "cow": {
+          "bull": [
+              "bull"
+          ],
+          "cow": [
+              "cow"
+          ],
+          "ox": [
+              "ox"
+          ]
+      },
+    "coyote": {
+        "coyote": [
+            "coyote"
+        ]
+    },
+    "crab": {
+        "crab": [
+            "crab"
+        ]
+    },
+    "deer": {
+        "buck": [
+            "buck"
+        ],
+        "deer": [
+            "deer"
+        ]
+    },
+    "dog": {
+        "dogamericanfoxhound": [
+            "americanfoxhound"
+        ],
+        "dogaustraliansheperd": [
+            "australiansheperd"
+        ],
+        "dogbluetickcoonhound": [
+            "bluetickcoonhound"
+        ],
+        "dogcatahoulacur": [
+            "catahoulacur"
+        ],
+        "dogchesbayretriever": [
+            "chesbayretriever"
+        ],
+        "dogcollie": [
+            "collie"
+        ],
+        "doghobo": [
+            "hobo"
+        ],
+        "doghound": [
+            "hound"
+        ],
+        "doghusky": [
+            "husky"
+        ],
+        "doglab": [
+            "lab"
+        ],
+        "dogpoodle": [
+            "poodle"
+        ]
+    },
+    "donkey": {
+        "donkey": [
+            "donkey"
+        ]
+    },
+    "elk": {
+        "elk": [
+            "elk"
+        ]
+    },
+    "fox": {
+        "fox": [
+            "fox"
+        ]
+    },
+    "frog/toad": {
+        "frogbull": [
+            "frogbull"
+        ],
+        "toad": [
+            "toad"
+        ]
+    },
+    "gilamonster": {
+        "gilamonster": [
+            "gilamonster"
+        ]
+    },
+    "goat": {
+        "goat": [
+            "goat"
+        ]
+    },
+    "horse": {
+        "horse_americanpaint": [
+            "americanpaint greyovero",
+            "americanpaint overo",
+            "americanpaint splashedwhite",
+            "americanpaint tobiano"
+        ],
+        "horse_americanstandardbred": [
+            "americanstandardbred black",
+            "americanstandardbred buckskin",
+            "americanstandardbred palominodapple",
+            "americanstandardbred silvertailbuckskin"
+        ],
+        "horse_andalusian": [
+            "andalusian darkbay",
+            "andalusian rosegray"
+        ],
+        "horse_appaloosa": [
+            "appaloosa blanket",
+            "appaloosa brownleopard",
+            "appaloosa leopard",
+            "appaloosa leopardblanket"
+        ],
+        "horse_arabian": [
+            "arabian black",
+            "arabian rosegreybay",
+            "arabian white"
+        ],
+        "horse_ardennes": [
+            "ardennes bayroan",
+            "ardennes strawberryroan"
+        ],
+        "horse_belgian": [
+            "belgian blondchestnut",
+            "belgian mealychestnut"
+        ],
+        "horse_dutchwarmblood": [
+            "dutchwarmblood chocolateroan",
+            "dutchwarmblood sealbrown",
+            "dutchwarmblood sootybuckskin"
+        ],
+        "horse_hungarianhalfbred": [
+            "hungarianhalfbred darkdapplegrey",
+            "hungarianhalfbred flaxenchestnut",
+            "hungarianhalfbred piebaldtobiano"
+        ],
+        "horse_kentuckysaddle": [
+            "kentuckysaddle black",
+            "kentuckysaddle chestnutpinto",
+            "kentuckysaddle grey",
+            "kentuckysaddle silverbay"
+        ],
+        "horse_missourifoxtrotter": [
+            "missourifoxtrotter amberchampagne",
+            "missourifoxtrotter silverdapplepinto"
+        ],
+        "horse_morgan": [
+            "morgan bay",
+            "morgan bayroan",
+            "morgan flaxenchestnut",
+            "morgan palomino"
+        ],
+        "horse_mustang": [
+            "mustang grullodun",
+            "mustang tigerstripedbay",
+            "mustang wildbay"
+        ],
+        "horse_nokota": [
+            "nokota blueroan",
+            "nokota reversedappleroan",
+            "nokota whiteroan"
+        ],
+        "horse_shire": [
+            "shire darkbay",
+            "shire lightgrey"
+        ],
+        "horse_suffolkpunch": [
+            "suffolkpunch redchestnut",
+            "suffolkpunch sorrel"
+        ],
+        "horse_tennesseewalker": [
+            "tennesseewalker blackrabicano",
+            "tennesseewalker chestnut",
+            "tennesseewalker dapplebay",
+            "tennesseewalker flaxenroan",
+            "tennesseewalker redroan"
+        ],
+        "horse_thoroughbred": [
+            "thoroughbred bloodbay",
+            "thoroughbred brindle",
+            "thoroughbred dapplegrey"
+        ],
+        "horse_turkoman": [
+            "turkoman darkbay",
+            "turkoman gold",
+            "turkoman silver"
+        ]
+    },
+    "horsemule": {
+        "horsemule": [
+            "horsemule"
+        ]
+    },
+    "iguana": {
+        "iguana": [
+            "iguana"
+        ],
+        "iguanadesert": [
+            "iguanadesert"
+        ]
+    },
+    "javelina": {
+        "javelina": [
+            "javelina"
+        ]
+    },
+    "moose": {
+        "moose": [
+            "moose"
+        ]
+    },
+    "panther": {
+        "panther": [
+            "panther"
+        ]
+    },
+    "pig": {
+          "boar": [
+              "boar"
+          ],
+          "pig": [
+              "pig"
+          ]
+      },
+    "possum": {
+        "possum": [
+            "possum"
+        ]
+    },
+    "pronghorn": {
+        "pronghorn": [
+            "pronghorn"
+        ]
+    },
+    "rabbit": {
+        "rabbit": [
+            "rabbit"
+        ]
+    },
+    "raccoon": {
+        "raccoon": [
+            "raccoon"
+        ]
+    },
+    "rat": {
+        "muskrat": [
+            "muskrat"
+        ],
+        "rat": [
+            "rat"
+        ]
+    },
+    "sheep": {
+        "bighornram": [
+            "bighornram"
+        ],
+        "sheep": [
+            "sheep"
+        ]
+    },
+    "skunk": {
+        "skunk": [
+            "skunk"
+        ]
+    },
+    "snake": {
+        "snake": [
+            "snake"
+        ],
+        "snakeblacktailrattle": [
+            "snakeblacktailrattle"
+        ],
+        "snakeferdelance": [
+            "snakeferdelance"
+        ],
+        "snakeredboa": [
+            "snakeredboa"
+        ],
+        "snakewater": [
+            "snakewater"
+        ]
+    },
+    "squirrel": {
+        "squirrel": [
+            "squirrel"
+        ]
+    },
+    "turtle": {
+        "turtlesea": [
+            "turtlesea"
+        ],
+        "turtlesnapping": [
+            "turtlesnapping"
+        ]
+    },
+    "wolf": {
+        "wolf": [
+            "wolf",
+            "wolf medium",
+            "wolf small"
+        ]
+    }
+}
