@@ -89,9 +89,54 @@ def mse(img1, img2):
     mse_value = err / (float(h * w * c))
     return mse_value#, diff
 
-def compare_all_times_with_metric(id, metric_func):
+def compare_all_times_with_metric_min(id, metric_func, times="all"):
     exrs = []
-    for itime in [0,7,12,17,20]:
+    if times == "all":
+        times = [0,7,12,17,20]
+    elif times == "no_night":
+        times = [7,12,17,20]
+    else:
+        times = [0,7,12,17,20]
+    for itime in times:
+        exr = load_exr_from_id(id, itime)
+        exrs.append(exr)
+    
+    metric_min = float('inf')
+    
+    for i in range(len(exrs)-1):
+        for j in range(i+1, len(exrs)):
+            metric = metric_func(exrs[i], exrs[j])
+            if metric < metric_min:
+                metric_min = metric
+    return metric_min
+
+def compare_all_times_with_metric_mean(id, metric_func, times="all"):
+    exrs = []
+    if times == "all":
+        times = [0,7,12,17,20]
+    elif times == "no_night":
+        times = [7,12,17,20]
+    else:
+        times = [0,7,12,17,20]
+    for itime in times:
+        exr = load_exr_from_id(id, itime)
+        exrs.append(exr)
+    
+    metric_sum = 0
+    for i in range(len(exrs)-1):
+        for j in range(i+1, len(exrs)):
+            metric_sum += metric_func(exrs[i], exrs[j])
+    return metric_sum / 10  # Normalize by number of comparisons (10 for 5 images)
+
+def compare_all_times_with_metric_conv(id, metric_func, times="all"):
+    exrs = []
+    if times == "all":
+        times = [0,7,12,17,20]
+    elif times == "no_night":
+        times = [7,12,17,20]
+    else:
+        times = [0,7,12,17,20]
+    for itime in times:
         exr = load_exr_from_id(id, itime)
         exr_convolved = convolve_with_DoG(exr)
         exrs.append(exr_convolved)
@@ -106,7 +151,7 @@ def compare_exr_with_png(id, time, metric_func):
     exr, png = get_images_from_id(id, time)
     return metric_func(exr, png)
 
-def compare_all_times_exr_with_png(id, metric_func, processing_func_exr=None, processing_func_png=None):
+def compare_all_times_exr_with_png_mean(id, metric_func, processing_func_exr=None, processing_func_png=None):
     exrs = []
     pngs = []
     for itime in [0,7,12,17,20]:
@@ -122,5 +167,8 @@ def compare_all_times_exr_with_png(id, metric_func, processing_func_exr=None, pr
     for i in range(len(exrs)):
         metric_sum += metric_func(exrs[i], pngs[i])
     return metric_sum / len(exrs)  # Normalize by number of comparisons
+
+
+
 
 
