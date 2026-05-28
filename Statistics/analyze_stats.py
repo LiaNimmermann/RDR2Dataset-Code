@@ -1,6 +1,12 @@
 import os
 import json
 from collections import Counter
+import pickle
+
+from tqdm import tqdm
+
+without = False
+wrong_only =False
 
 def analyse_dataset(save_path, before):
 
@@ -8,15 +14,29 @@ def analyse_dataset(save_path, before):
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    with open("id_metric_dict_times_mse_min.pkl", "rb") as f:
+        metrics = pickle.load(f)
+
+
+
     weather_counter = Counter()
     zone_counter = Counter()
     fine_class_counter = Counter()
+    fine_classes_capture_counter = Counter()
+    entities_per_capture_sum = 0
+    capture_count = 0
 
-    for _, capture_data in data.items():
+    for _, capture_data in tqdm(data.items()):
 
         capture = capture_data.get("Capture", {})
         entities = capture_data.get("Entities", [])
+        id = capture.get("ID")
 
+        if without and metrics[id]<0.0000001:
+            continue
+
+        if wrong_only and metrics[id]>=0.0000001:
+            continue
 
         if not entities:
             continue
@@ -28,11 +48,19 @@ def analyse_dataset(save_path, before):
         if zone:
             zone_counter[zone] += 1
 
+        capture_count += 1
+
+        found_fine_classes = set()
 
         for entity in entities:
+            entities_per_capture_sum += 1
             fine_class = entity.get("FineClassName")
             if fine_class:
                 fine_class_counter[fine_class] += 1
+                if not fine_class in found_fine_classes:
+                    fine_classes_capture_counter[fine_class] += 1
+                    found_fine_classes.add(fine_class)
+                
         
         captured_fine_classes = set(fine_class_counter.keys())
         
@@ -53,13 +81,21 @@ def analyse_dataset(save_path, before):
     "weather_counts": dict(sorted(weather_counter.items(), key=lambda x: x[0])),
     "zone_counts": dict(sorted(zone_counter.items(), key=lambda x: x[0])),
     "class_counts": dict(sorted(fine_class_counter.items(), key=lambda x: x[0])),
+    "fine_classes_capture_counts": dict(sorted(fine_classes_capture_counter.items(), key=lambda x: x[0])),
+    "fine_classes_avg_entities_per_capture": {fine_class: fine_class_counter[fine_class] / fine_classes_capture_counter[fine_class] if fine_classes_capture_counter[fine_class] > 0 else 0 for fine_class in fine_class_counter},
+    "avg_entities_per_capture": entities_per_capture_sum / capture_count if capture_count > 0 else 0
 }
-
-    save_path = os.path.join(save_path, "stats_summary_all_classes_final.json")
+    if without:
+        save_path = os.path.join("stats_summary_all_classes_wo.json")
+    elif wrong_only:
+        save_path = os.path.join("stats_summary_all_classes_wrong_only.json")
+    else:
+        save_path = os.path.join("stats_summary_all_classes_final.json")
 
     with open(save_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=4, ensure_ascii=False)
 
 
 
-analyse_dataset("/media/lstracke/T5 EVO/RDR2_dataset_processed", False)
+analyse_dataset("/home/lnimmermann/Code/RDR2Dataset-Code/Statistics", False)
+print("Done")

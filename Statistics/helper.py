@@ -3,7 +3,7 @@ import numpy as np
 import os
 import tqdm
 
-path_to_set = r"D:\Subset"
+path_to_set = r"/media/lnimmermann/T5 EVO/RDR2_dataset_processed"
 ######## Loader and Helper functions ########
 
 def load_image(file_path):
@@ -23,8 +23,8 @@ def load_image(file_path):
 def get_images_from_id(id, time=0):
     if id < 1000000:
         id = 1000000 + id
-    filename_exr = path_to_set + r"\HDR_EXR\h_" + str(id) + "_"+ str(time) +".exr"
-    filename_png = path_to_set + r"\PNG\o_" + str(id) + "_"+ str(time) +".png"
+    filename_exr = path_to_set + r"/HDR_exr/h_" + str(id) + "_"+ str(time) +".exr"
+    filename_png = path_to_set + r"/PNG/o_" + str(id) + "_"+ str(time) +".png"
     return load_image(filename_exr), load_image(filename_png)
 
 def load_exr_image(file_path):
@@ -37,7 +37,7 @@ def load_exr_image(file_path):
 def load_exr_from_id(id, time=0):
     if id < 1000000:
         id = 1000000 + id
-    filename_exr = path_to_set + r"\HDR_EXR\h_" + str(id) + "_"+ str(time) +".exr"
+    filename_exr = path_to_set + r"/HDR_exr/h_" + str(id) + "_"+ str(time) +".exr"
     
     return load_exr_image(filename_exr)
 
@@ -45,7 +45,7 @@ def save_exr_images_to_png(ids, path_for_saving):
     for id in tqdm(ids):
         for time in [0,7,12,17,20]:
             exr = load_exr_from_id(id, time)
-            cv2.imwrite(path_for_saving + r"\exr_to_png_{id}_{time}.png", exr)
+            cv2.imwrite(path_for_saving + r"/exr_to_png_{id}_{time}.png", exr)
 
 
 ########## Metrics Helper functions ##########

@@ -14,7 +14,7 @@ from helper import *
 import multiprocessing
 import tqdm.auto
 
-directory = r"D:\Subset\HDR_EXR"
+directory = r"/media/lnimmermann/T5 EVO/RDR2_dataset_processed/HDR_exr"
 divs = {}
 
 ##### Function to process each file and compute the metric #####
