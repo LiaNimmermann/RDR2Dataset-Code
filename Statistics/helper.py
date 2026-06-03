@@ -9,10 +9,12 @@ path_to_set = r"/media/lnimmermann/T5 EVO/RDR2_dataset_processed"
 def load_image(file_path):
     if file_path.split(".")[-1].lower() == "exr":
         img = cv2.imread(file_path, flags=cv2.IMREAD_ANYDEPTH + cv2.IMREAD_COLOR)
-        img = np.clip(img, 0, 10)
+        #img = np.clip(img, 0, 10)
         # appy Reinhard-tone mapping
-        img /= (1.0 + img)
-        img *= 255
+        #img /= (1.0 + img)
+        #img *= 255
+        img = img / (img.max() + 1e-8)
+        img = np.clip(img * 255, 0, 255).astype(np.uint8)
     else:
         img = cv2.imread(file_path)
     if img is None:
@@ -47,6 +49,9 @@ def save_exr_images_to_png(ids, path_for_saving):
             exr = load_exr_from_id(id, time)
             cv2.imwrite(path_for_saving + r"/exr_to_png_{id}_{time}.png", exr)
 
+def grayscale(image):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return image.astype(np.uint8)
 
 ########## Metrics Helper functions ##########
 
@@ -68,6 +73,11 @@ def convolve_with_DoG(image, kernel_size=5, sigma=1.0):
     
     return convolved_image
 
+def similarity(img1, img2):
+    img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
+    return cv2.matchTemplate(
+        img1, img2, cv2.TM_CCOEFF_NORMED
+    )[0][0]
 
 def get_symm_kl_div(img1, img2):
     hist1 = np.histogram(img1, bins=256, range=(0, 255), density=True)[0]
@@ -169,6 +179,24 @@ def compare_all_times_exr_with_png_mean(id, metric_func, processing_func_exr=Non
     return metric_sum / len(exrs)  # Normalize by number of comparisons
 
 
-
+def compare_all_times_exr_with_png_min(id, metric_func, processing_func_exr=None, processing_func_png=None):
+    exrs = []
+    pngs = []
+    for itime in [0,7,12,17,20]:
+        exr, png = get_images_from_id(id, itime)
+        if processing_func_exr:
+            exr = processing_func_exr(exr)
+        if processing_func_png:
+            png = processing_func_png(png)
+        exrs.append(exr)
+        pngs.append(png)
+    
+    metric_min = float('inf')
+    
+    for i in range(len(exrs)):
+        metric = metric_func(exrs[i], pngs[i])
+        if metric < metric_min:
+            metric_min = metric
+    return metric_min  # Return the minimum metric
 
 

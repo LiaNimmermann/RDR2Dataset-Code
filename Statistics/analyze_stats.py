@@ -5,7 +5,7 @@ import pickle
 
 from tqdm import tqdm
 
-without = False
+without = True
 wrong_only =False
 
 def analyse_dataset(save_path, before):
@@ -14,8 +14,11 @@ def analyse_dataset(save_path, before):
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    with open("id_metric_dict_times_mse_min.pkl", "rb") as f:
-        metrics = pickle.load(f)
+    with open("id_metric_dict_times_min_mse.pkl", "rb") as f:
+        metrics_mse_min = pickle.load(f)
+
+    with open("id_metric_dict_png_exr_sim.pkl", "rb") as f:
+        metrics_similarity = pickle.load(f)
 
 
 
@@ -32,10 +35,10 @@ def analyse_dataset(save_path, before):
         entities = capture_data.get("Entities", [])
         id = capture.get("ID")
 
-        if without and metrics[id]<0.0000001:
+        if without and metrics_mse_min[id]<0.0000001 and metrics_similarity[id]<0.0:
             continue
 
-        if wrong_only and metrics[id]>=0.0000001:
+        if wrong_only and metrics_mse_min[id]>=0.0000001 and metrics_similarity[id]>=0.0:
             continue
 
         if not entities:
@@ -86,7 +89,7 @@ def analyse_dataset(save_path, before):
     "avg_entities_per_capture": entities_per_capture_sum / capture_count if capture_count > 0 else 0
 }
     if without:
-        save_path = os.path.join("stats_summary_all_classes_wo.json")
+        save_path = os.path.join("stats_summary_all_classes_wo_sim_mse.json")
     elif wrong_only:
         save_path = os.path.join("stats_summary_all_classes_wrong_only.json")
     else:

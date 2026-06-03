@@ -30,6 +30,7 @@ def process_file(filename):
         #metric = compare_all_times_with_metric_mean(id, metric_func=get_symm_kl_div)
         #metric = compare_all_times_exr_with_png(id, metric_func=mse, processing_func_exr=convolve_with_DoG, processing_func_png=convolve_with_DoG)
         metric = compare_all_times_with_metric_min(id, metric_func=mse)
+        #metric = compare_all_times_exr_with_png_min(id, metric_func=similarity)
         #metric = ...?
         return id, metric
     else:
@@ -68,7 +69,7 @@ if __name__ == '__main__':
             ),
         )
     results = {id: div for id, div in results.items() if id != 0}
-    pickle.dump(results, open("id_metric_dict_times_mse_min.pkl", "wb"))    
+    pickle.dump(results, open("id_metric_dict_times_min_mse.pkl", "wb"))    
     print(results)
     print("-"*20)
     
